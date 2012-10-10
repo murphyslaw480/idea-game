@@ -30,12 +30,10 @@ namespace Wizards
             START_POSITION_X = (int)pos.X;
             START_POSITION_Y = (int)pos.Y;
             mDirection = pos2 - pos;
-            //float mDirectionLength = (float)(Math.Sqrt(mDirection.X * mDirection.X + mDirection.Y * mDirection.Y));
-            //mDirection = mDirection / mDirectionLength;
-            mSpeed.X = 1;
-            mSpeed.Y = 1;
-            //mSpeed.X = WIZARD_SPEED;
-            //mSpeed.Y = WIZARD_SPEED;
+            float mDirectionLength = (float)(Math.Sqrt(mDirection.X * mDirection.X + mDirection.Y * mDirection.Y));
+            mDirection = mDirection / mDirectionLength;
+            mSpeed.X = WIZARD_SPEED;
+            mSpeed.Y = WIZARD_SPEED;
         }
 
         public void LoadContent(ContentManager theContentManager)
