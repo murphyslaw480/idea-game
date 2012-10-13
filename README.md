@@ -33,20 +33,24 @@ The black hole
 *   occasionally shifts to wormhole mode and shoots out possibly useful
     debris
 
-## How to use Git and Github
+## Setting up Git, Github, etc.
 
 ### Getting your own copy of the repository
 
 1.  Make a Github account and install [Github for Windows][2] (or just
-    Git on Mac/Linux).
+    Git on Mac/Linux). If you're using Github for Windows, go to the
+    settings and make sure you enter your name and email address, and
+    also switch the option for the shell to Git Bash.
 
 2.  Visit the [main idea-game repository][3] on github.com and click the
     **Fork** button. Now you have a copy of the repository under your
     Github account.
 
-3.  Now you need to **clone** your forked repository to your computer. You
-    can do this through Github for Windows, or you can open the Git
-    shell, `cd` to a suitable location, and do
+3.  Now you need to **clone** your forked repository to your computer.
+    If you have Github for Windows installed, you can just browse to the
+    repository on Github and click the "Clone in Windows" button.
+    Otherwise, you can open the Git shell, `cd` to a suitable location,
+    and do
 
         $ git clone <repository>
 
@@ -55,12 +59,78 @@ The black hole
     page for your repository). This will create a new directory with the
     same name as the repository.
 
-4.  Add the `upstream` remote. I think you have to use the Git shell to
-    do this.
+### Setting up the kalgynirae/idea-game repository as the 'upstream' remote
+
+You can't do this through Github for Windows as far as I can tell, so
+you'll have to get your hands dirty and use the shell for a bit.
+
+1.  Open Git Bash or your equivalent and `cd` to your local repository.
+
+2.  Use
+
+        $ git remote
+
+    to list the remotes you currently have set up. If you already have
+    one called `upstream`, then you're done! Otherwise, proceed.
+
+3.  Do
 
         $ git remote add upstream git://github.com/kalgynirae/idea-game.git
 
-### Git basics
+    . And that's it!
+
+### Getting updates from the upstream remote
+
+The first thing to do is download the changes from the upstream
+repository:
+
+    $ git fetch upstream
+
+Then, you have to decide what to do. There are a few options:
+
+*   merge the changes from one of upstream's branches into your
+    current branch. This works best if you haven't made commits onto
+    your branch.
+
+        # Merge upstream's master branch into the current branch
+        $ git merge upstream/master
+
+*   rebase your branch onto one of upstream's branches. This is sort of
+    like pulling in commits *underneath* the commits you've made,
+    whereas merging would put them *on top* of commits you've made. This
+    is probably what you should do if you've made commits on your branch
+    but you also want to pull in changes from upstream.
+
+        # Rebase the current branch onto upstream's master branch
+        $ git rebase upstream/master
+
+*   check out one of upstream's branches just to look at the files. Note
+    that you can't make any commits while you have a remote branch
+    checked out.
+
+        $ git checkout upstream/master
+
+*   start a new branch based one of upstream's branches.
+
+        # Check out the relevant upstream branch
+        $ git checkout upstream/master
+        # Create and checkout a new branch
+        $ git checkout -b mybranch
+
+### Working on a specific feature
+
+1.  Download any changes from upstream.
+
+        $ git fetch upstream
+
+2.  Start a new branch based on upstream/master.
+
+        $ git checkout upstream/master
+        $ git checkout -b newbranchname
+
+3.  Start coding! Don't forget to commit periodically as you work!
+
+## Git command-line basics
 
 Your best friend:
 
@@ -174,19 +244,6 @@ To incorporate the changes from Branch A into Branch B, you
 
 There are other ways to incorporate changes from one branch into
 another, but merging is the simplest and most common.
-
-### Using Git to work on the game
-
-In general, you'll want to develop individual features on separate
-branches. In practice, it's not a big deal what branch you work on,
-because it's pretty easy to move commits between branches later.
-However, if you know what you're planning to do, you should start by
-creating a new branch.
-
-As you work, you should periodically stage and commit your changes. You
-don't need to worry too much about making your commits consistent or
-about making too many or too few commits, because commits can be
-combined or re-worked later if needed.
 
 [1]: https://github.com/
 [2]: http://windows.github.com/
