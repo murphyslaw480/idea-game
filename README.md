@@ -17,7 +17,8 @@ ship again (AKA NEXT LEVEL).
 
 You
 
-*   are floating in space, stranded because your ship broke
+*   are floating in space, stranded because your ship broke (or on a
+    planet, or on an asteroid, etc.)
 *   have a jet pack, so you can move around in space
 *   are trying to rebuild your ship so you can escape
 
@@ -34,6 +35,22 @@ The black hole
     debris
 
 ## Setting up Git, Github, etc.
+
+### How to work on a feature for the game
+
+Assuming you have already forked and cloned the repository and set up
+the upstream remote (if not, read the sections below):
+
+1.  Download any changes from upstream.
+
+        $ git fetch upstream
+
+2.  Start a new branch based on upstream/master.
+
+        $ git checkout upstream/master
+        $ git checkout -b newbranchname
+
+3.  Start coding! Don't forget to commit periodically as you work!
 
 ### Getting your own copy of the repository
 
@@ -116,19 +133,6 @@ Then, you have to decide what to do. There are a few options:
         $ git checkout upstream/master
         # Create and checkout a new branch
         $ git checkout -b mybranch
-
-### Working on a specific feature
-
-1.  Download any changes from upstream.
-
-        $ git fetch upstream
-
-2.  Start a new branch based on upstream/master.
-
-        $ git checkout upstream/master
-        $ git checkout -b newbranchname
-
-3.  Start coding! Don't forget to commit periodically as you work!
 
 ## Git command-line basics
 
