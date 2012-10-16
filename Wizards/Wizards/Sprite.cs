@@ -22,6 +22,8 @@ namespace Wizards
         //The amount to increase/decrease the size of the original sprite. 
         private float mScale = 0.3f;
 
+        private float angle = 0.0f;
+
         //The current position of the Sprite
         public Vector2 Position = new Vector2(0, 0);
 
@@ -39,7 +41,7 @@ namespace Wizards
         //Draw the sprite to the screen
         public void Draw(SpriteBatch theSpriteBatch)
         {
-            theSpriteBatch.Draw(mSpriteTexture, Position, new Rectangle(0, 0, mSpriteTexture.Width, mSpriteTexture.Height), Color.White, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
+            theSpriteBatch.Draw(mSpriteTexture, Position, new Rectangle(0, 0, mSpriteTexture.Width, mSpriteTexture.Height), Color.White, angle, Vector2.Zero, Scale, SpriteEffects.None, 0);
         }
 
         //When the scale is modified throught he property, the Size of the 
@@ -80,11 +82,12 @@ namespace Wizards
         }
 
         // Enemy/Fireball Update
-        public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection)
+        public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection, float angle)
         {
             Vector2 nextPos = Position;
             nextPos += theDirection * theSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
             Position = nextPos;
+            this.angle = angle;
         }
 
         // TODO: New Enemy Update

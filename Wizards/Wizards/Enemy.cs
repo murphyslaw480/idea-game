@@ -17,6 +17,7 @@ namespace Wizards
         int START_POSITION_X = 0;
         int START_POSITION_Y = 0;
         const int WIZARD_SPEED = 100;
+        float angle = 0.0f;
 
         enum State
         {
@@ -52,7 +53,7 @@ namespace Wizards
             mDirection = playerPos - adjsPos;
             float mDirectionLength = (float)(Math.Sqrt(mDirection.X * mDirection.X + mDirection.Y * mDirection.Y));
             mDirection = mDirection / mDirectionLength;
-            base.Update(theGameTime, mSpeed, mDirection);
+            base.Update(theGameTime, mSpeed, mDirection, angle);
         }
 
     }
