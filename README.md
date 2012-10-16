@@ -34,9 +34,7 @@ The black hole
 *   occasionally shifts to wormhole mode and shoots out possibly useful
     debris
 
-## Setting up Git, Github, etc.
-
-### How to work on a feature for the game
+## How to work on a feature for the game
 
 Assuming you have already forked and cloned the repository and set up
 the upstream remote (if not, read the sections below):
@@ -51,6 +49,8 @@ the upstream remote (if not, read the sections below):
         $ git checkout -b newbranchname
 
 3.  Start coding! Don't forget to commit periodically as you work!
+
+## Setting up Git, Github, etc.
 
 ### Getting your own copy of the repository
 
