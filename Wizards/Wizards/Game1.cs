@@ -27,6 +27,7 @@ namespace Wizards
         TimeSpan totalForSpawnElapsed;
         Knight player = new Knight();
         MouseIcon mMouseIconSprite = new MouseIcon();
+        //Debugging
 
         public Game1()
         {
@@ -68,6 +69,8 @@ namespace Wizards
             }*/
             player.LoadContent(this.Content);
             mMouseIconSprite.LoadContent(this.Content);
+            //Load single white pixel for particle texture
+            Particle.BlankParticleTexture = Content.Load<Texture2D>("BlankParticle");
         }
 
         /// <summary>

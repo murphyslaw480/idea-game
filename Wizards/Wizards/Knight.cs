@@ -20,6 +20,8 @@ namespace Wizards
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
         const int MOVE_RIGHT = 1;
+        //Particle Effect Parameters
+        private ParticleEffect mDownwardThrusterEffect;
 
         enum State
         {
@@ -33,6 +35,10 @@ namespace Wizards
         public void LoadContent(ContentManager theContentManager)
         {
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
+            mDownwardThrusterEffect = new ParticleEffect(new Vector2(Size.Center.X, Size.Center.Y), new Vector2(10, 10), 
+                new Vector2(0, 150), new Vector2(30, 30), 
+                new Vector2(0, -10f), new Vector2(0, 2), 
+                20, 5, 3);
             base.LoadContent(theContentManager, WIZARD_ASSETNAME);
         }
 
@@ -41,7 +47,15 @@ namespace Wizards
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
             UpdateMovement(aCurrentKeyboardState);
             mPreviousKeyboardState = aCurrentKeyboardState;
+            //TODO: Add a PositionVector property to sprite class
+            mDownwardThrusterEffect.Update(theGameTime, new Vector2(Position.X + Size.Center.X, Position.Y + Size.Center.Y));
             base.Update(theGameTime, mSpeed, mDirection, graphics);
+        }
+
+        public void Draw(SpriteBatch theSpriteBatch)
+        {
+            mDownwardThrusterEffect.Draw(theSpriteBatch);
+            base.Draw(theSpriteBatch);
         }
 
         private void UpdateMovement(KeyboardState aCurrentKeyboardState)
@@ -64,6 +78,8 @@ namespace Wizards
                 {
                     mSpeed.Y = WIZARD_SPEED;
                     mDirection.Y = MOVE_UP;
+                    //create thruster particles downward
+                    mDownwardThrusterEffect.Spawn();
                 }
                 else if (aCurrentKeyboardState.IsKeyDown(Keys.S) == true)
                 {
