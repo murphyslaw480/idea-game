@@ -20,7 +20,7 @@ namespace Wizards
         public Vector2 AccelerationSpread;   //Randomness in Acceleration for each particle
         public int DefaultParticleLife, ParticleLifeSpread;     //Default particle lifetime (see particle class)
         public int SpawnDensity;        //number of particles created per spawn call
-        private List<Particle> mParticles;      //list of living particles
+        protected List<Particle> mParticles;      //list of living particles
 
         /// <summary>
         /// Create a new particle generator at the given location
@@ -63,15 +63,56 @@ namespace Wizards
             ParticleLifeSpread = theParticleLifeSpread;
         }
 
+        /// <summary>
+        /// Generate a number of new particles equal to the effect's ParticleDensity
+        /// </summary>
         public void Spawn()
         {
-            Vector2 pos = addRandomSpread(SourcePosition, PositionSpread);
-            Vector2 vel = addRandomSpread(BaseVelocity, VelocitySpread);
-            Vector2 accel = addRandomSpread(BaseAcceleration, AccelerationSpread);
-            int life = addRandomSpread(DefaultParticleLife, ParticleLifeSpread);
-            mParticles.Add(new Particle(life, pos, vel, accel));
+            //spawn a number of particles determined by spawndensity
+            for (int i = 0; i < SpawnDensity; i++)
+            {
+                AddNewParticle(new Particle());
+            }
         }
 
+        /// <summary>
+        /// For internal use within the Spawn method of ParticleEffect and its subclasses
+        /// Sets the particle's position, velocity, acceleration, and lifetime
+        /// Can pass in a subclass of Particle for more specific behavior
+        /// </summary>
+        /// <param name="particle">A Particle, or subclass thereof, to adjust the parameters of and add to the particle list</param>
+        protected void AddNewParticle(Particle particle)
+        {
+            //add randomness in positioning, movement, and life
+            particle.Position = addRandomSpread(SourcePosition, PositionSpread);
+            particle.Velocity = addRandomSpread(BaseVelocity, VelocitySpread);
+            particle.Acceleration = addRandomSpread(BaseAcceleration, AccelerationSpread);
+            particle.LifeTime = addRandomSpread(DefaultParticleLife, ParticleLifeSpread);
+            mParticles.Add(particle);
+        }
+
+        /// <summary>
+        /// For internal use within the Spawn method of ParticleEffect and its subclasses
+        /// Sets the particle's position, velocity, acceleration, and lifetime
+        /// Velocity and acceleration are rotated by angle degrees
+        /// Can pass in a subclass of Particle for more specific behavior
+        /// </summary>
+        /// <param name="particle">A Particle, or subclass thereof, to adjust the parameters of and add to the particle list</param>
+        protected void AddNewParticle(Particle particle, float angle)
+        {
+            Matrix rotMatrix = Matrix.CreateRotationZ(MathHelper.ToRadians(angle));
+            //add randomness in positioning, movement, and life
+            particle.Position = addRandomSpread(SourcePosition, PositionSpread);
+            particle.Velocity = Vector2.Transform(addRandomSpread(BaseVelocity, VelocitySpread), rotMatrix);
+            particle.Acceleration = Vector2.Transform(addRandomSpread(BaseAcceleration, AccelerationSpread), rotMatrix);
+            particle.LifeTime = addRandomSpread(DefaultParticleLife, ParticleLifeSpread);
+            mParticles.Add(particle);
+        }
+
+        /// <summary>
+        /// Call Update on each of its particles and remove expired particles
+        /// </summary>
+        /// <param name="theGameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime theGameTime)
         {
             //Traverse in reverse to allow removal
@@ -84,6 +125,12 @@ namespace Wizards
             }
         }
 
+        /// <summary>
+        /// Call Update on each of its particles and remove expired particles
+        /// Also updates position to provided position vector
+        /// Use to keep a particle effect anchored to a moving sprite
+        /// </summary>
+        /// <param name="theGameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime theGameTime, Vector2 newPosition)
         {
             SourcePosition = newPosition;
@@ -98,8 +145,8 @@ namespace Wizards
 
         private Vector2 addRandomSpread(Vector2 baseVector, Vector2 spreadVector)
         {
-            float x = baseVector.X + (spreadVector.X - (float)Rand.NextDouble() * spreadVector.X * 2);
-            float y = baseVector.Y + (spreadVector.Y - (float)Rand.NextDouble() * spreadVector.Y * 2);
+            float x = baseVector.X + spreadVector.X * (1.0f - 2 * (float)Rand.NextDouble()); 
+            float y = baseVector.Y + spreadVector.Y * (1.0f - 2 * (float)Rand.NextDouble());
             return new Vector2(x, y);
         }
 

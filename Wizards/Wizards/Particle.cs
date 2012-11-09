@@ -24,7 +24,8 @@ namespace Wizards
         {
             LifeTime = 0;
             Position = Velocity = Acceleration = Vector2.Zero;
-            Scale = Angle = 0.0f;
+            Scale = 1.0f;
+            Angle = 0.0f;
             ParticleColor = Color.White;
         }
         /// <summary>
@@ -62,7 +63,9 @@ namespace Wizards
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
-            theSpriteBatch.Draw(BlankParticleTexture, Position, null, ParticleColor, Angle, Vector2.Zero, Scale, SpriteEffects.None, 0);
+            Vector2 rotationCenter = new Vector2(0.5f, 0.5f);
+            //Draw arguments:   texture              location section(all)   color  rotation    rotation axis (center)          scale  effects          depth
+            theSpriteBatch.Draw(BlankParticleTexture, Position, null, ParticleColor, Angle, rotationCenter, Scale, SpriteEffects.None, 0);
         }
     }
 }
