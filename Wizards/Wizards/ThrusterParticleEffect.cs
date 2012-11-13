@@ -10,8 +10,8 @@ namespace Wizards
     class ThrusterParticleEffect : ParticleEffect
     {
         //Default particle spawning variance parameters -- play around till it looks right
-        private const int defaultParticleLife = 20;
-        private const int defaultParticleLifeSpread = 10;
+        private const float defaultParticleLife = 0.3f;
+        private const float defaultParticleLifeSpread = 0.08f;
         private const int defaultSpawnDensity = 5;
         static Vector2 defaultPositionSpread = new Vector2(10, 10);
         static Vector2 defaultVelocitySpread = new Vector2(30, 30);

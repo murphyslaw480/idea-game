@@ -20,8 +20,8 @@ namespace Wizards
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
         const int MOVE_RIGHT = 1;
-        const float THRUSTER_PARTICLE_VELOCITY = 250.0f; 
-        const float THRUSTER_PARTICLE_DECELERATION = 900.0f;
+        const float THRUSTER_PARTICLE_VELOCITY = 120.0f; 
+        const float THRUSTER_PARTICLE_DECELERATION = 500.0f;
         //Particle Effect Parameters
         private ThrusterParticleEffect mDownwardThrusterEffect;
 

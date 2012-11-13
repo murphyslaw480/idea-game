@@ -12,10 +12,10 @@ namespace Wizards
         //how much to expand particle each frame
         private const float scalePerUpdate = 1.5f; 
         //how much to change each color component each frame
-        private const byte redDecrement = 5;
+        private const byte redDecrement = 7;
         private const byte greenIncrement = 3;
         private const byte blueIncrement = 3;
-        private const byte alphaDecrement = 11;
+        private const byte alphaDecrement = 15;
 
         public ExhaustParticle()
             : base(0, Vector2.Zero, Vector2.Zero, Vector2.Zero, Color.Red, 2.0f)

@@ -18,7 +18,7 @@ namespace Wizards
         public Vector2 VelocitySpread;   //Randomness in velocity for each particle
         public Vector2 BaseAcceleration;    //Default Acceleration for spawned particles
         public Vector2 AccelerationSpread;   //Randomness in Acceleration for each particle
-        public int DefaultParticleLife, ParticleLifeSpread;     //Default particle lifetime (see particle class)
+        public float DefaultParticleLife, ParticleLifeSpread;     //Default particle lifetime (see particle class)
         public int SpawnDensity;        //number of particles created per spawn call
         protected List<Particle> mParticles;      //list of living particles
 
@@ -31,7 +31,7 @@ namespace Wizards
         /// <param name="theAcceleration">Acceleration for spawned particles</param>
         /// <param name="theParticleLife">How long spawned particles will exist</param>
         /// <param name="theSpawnDensity">How many particles to spawn per call</param>
-        public ParticleEffect(Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration, int theParticleLife, int theSpawnDensity = 1)
+        public ParticleEffect(Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration, float theParticleLife, int theSpawnDensity = 1)
         {
             SourcePosition = thePosition;
             BaseVelocity = theVelocity;
@@ -54,7 +54,7 @@ namespace Wizards
         /// <param name="theAcceleration"></param>
         /// <param name="theAccelerationSpread"></param>
         public ParticleEffect(Vector2 thePosition, Vector2 thePositionSpread, Vector2 theVelocity, Vector2 theVelocitySpread,
-            Vector2 theAcceleration,Vector2 theAccelerationSpread, int theParticleLife, int theParticleLifeSpread, int theSpawnDensity = 1)
+            Vector2 theAcceleration,Vector2 theAccelerationSpread, float theParticleLife, float theParticleLifeSpread, int theSpawnDensity = 1)
             :this(thePosition, theVelocity, theAcceleration, theParticleLife, theSpawnDensity)
         {
             PositionSpread = thePositionSpread;
@@ -150,9 +150,9 @@ namespace Wizards
             return new Vector2(x, y);
         }
 
-        private int addRandomSpread(int baseInt, int spread)
+        private float addRandomSpread(float baseFloat, float spread)
         {
-            return baseInt - Rand.Next(spread) * 2;
+            return baseFloat + (1.0f - 2 * (float)Rand.NextDouble()) * spread ;
         }
 
     }

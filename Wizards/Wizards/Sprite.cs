@@ -20,7 +20,7 @@ namespace Wizards
         public Rectangle Size;
 
         //The amount to increase/decrease the size of the original sprite. 
-        private float mScale = 0.3f;
+        private float mScale = 0.1f;
 
         private float angle = 0.0f;
 

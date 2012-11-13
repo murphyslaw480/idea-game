@@ -17,7 +17,7 @@ namespace Wizards
         public static Texture2D BlankParticleTexture;
         public Vector2 Position, Velocity, Acceleration;
         public float Scale, Angle;
-        public int LifeTime;        //how many frames the particle has left to exist
+        public float LifeTime;        //how many seconds the particle has left to exist
         public Color ParticleColor;
 
         public Particle()
@@ -35,7 +35,7 @@ namespace Wizards
         /// <param name="thePosition">Initial Particle Location</param>
         /// <param name="theVelocity">Initial Particle Velocity</param>
         /// <param name="theAcceleration">Initial Particle Acceleration</param>
-        public Particle(int theLife, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration)
+        public Particle(float theLife, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration)
         {
             LifeTime = theLife;
             Position = thePosition;
@@ -46,7 +46,7 @@ namespace Wizards
             ParticleColor = Color.White;
         }
 
-        public Particle(int theLife, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration, Color theColor, float theScale = 0.0f, float theAngle = 0.0f)
+        public Particle(float theLife, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration, Color theColor, float theScale = 0.0f, float theAngle = 0.0f)
             : this(theLife, thePosition, theVelocity, theAcceleration)
         {
             ParticleColor = theColor;
@@ -58,7 +58,7 @@ namespace Wizards
         {
             Velocity += Acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
             Position += Velocity * (float)theGameTime.ElapsedGameTime.TotalSeconds;
-            LifeTime--;     //Decrement Life, Particle Effect should remove this particle if it reaches 0
+            LifeTime-= (float)theGameTime.ElapsedGameTime.TotalSeconds;     //Decrement Life, Particle Effect should remove this particle if it reaches 0
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
