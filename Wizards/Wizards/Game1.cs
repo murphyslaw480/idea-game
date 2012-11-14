@@ -27,7 +27,10 @@ namespace Wizards
         TimeSpan totalForSpawnElapsed;
         Knight player = new Knight();
         MouseIcon mMouseIconSprite = new MouseIcon();
-        //Debugging
+
+        BlackHole blackHole;
+        static Vector2 blackHolePosition = new Vector2(200, 200);
+
 
         public Game1()
         {
@@ -50,6 +53,9 @@ namespace Wizards
             mMouseIconSprite = new MouseIcon();
             totalForFireElapsed = TimeSpan.FromMilliseconds(200);
             totalForSpawnElapsed = TimeSpan.Zero;
+
+            blackHole = new BlackHole(blackHolePosition, Vector2.Zero, Vector2.Zero);
+
             base.Initialize();
         }
 
@@ -109,6 +115,7 @@ namespace Wizards
             }
             removeLostBalls();
             checkFireEnemyCollision();
+            blackHole.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -205,6 +212,7 @@ namespace Wizards
                 a.Draw(spriteBatch);
             }
             player.Draw(spriteBatch);
+            blackHole.Draw(spriteBatch);
             mMouseIconSprite.Draw(spriteBatch);
             spriteBatch.End();
 

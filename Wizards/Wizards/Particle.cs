@@ -41,7 +41,7 @@ namespace Wizards
             Position = thePosition;
             Velocity = theVelocity;
             Acceleration = theAcceleration;
-            Scale = 9.0f;
+            Scale = 1.0f;
             Angle = 0.0f;
             ParticleColor = Color.White;
         }
@@ -61,9 +61,24 @@ namespace Wizards
             LifeTime-= (float)theGameTime.ElapsedGameTime.TotalSeconds;     //Decrement Life, Particle Effect should remove this particle if it reaches 0
         }
 
+        /// <summary>
+        /// Draw the particle, using its center as the axis for rotation
+        /// </summary>
+        /// <param name="theSpriteBatch">SpriteBatch with which to draw the particle</param>
         public void Draw(SpriteBatch theSpriteBatch)
         {
             Vector2 rotationCenter = new Vector2(0.5f, 0.5f);
+            //Draw arguments:   texture              location section(all)   color  rotation    rotation axis (center)          scale  effects          depth
+            theSpriteBatch.Draw(BlankParticleTexture, Position, null, ParticleColor, Angle, rotationCenter, Scale, SpriteEffects.None, 0);
+        }
+
+        /// <summary>
+        /// Draw particle, rotating around the provided position
+        /// </summary>
+        /// <param name="theSpriteBatch">SpriteBatch with which to draw the particle</param>
+        /// <param name="rotationCenter">Point about which to rotate particle</param>
+        public void Draw(SpriteBatch theSpriteBatch, Vector2 rotationCenter)
+        {
             //Draw arguments:   texture              location section(all)   color  rotation    rotation axis (center)          scale  effects          depth
             theSpriteBatch.Draw(BlankParticleTexture, Position, null, ParticleColor, Angle, rotationCenter, Scale, SpriteEffects.None, 0);
         }

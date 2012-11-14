@@ -11,15 +11,15 @@ namespace Wizards
     //calls particle update and draw methods and can spawn new particles
     class ParticleEffect
     {
-        public static Random Rand = new Random();
-        public Vector2 SourcePosition;  //Point from which new particles spawn
-        public Vector2 PositionSpread;  //Randomness in spawn location for each particle
-        public Vector2 BaseVelocity;    //Default velocity for spawned particles
-        public Vector2 VelocitySpread;   //Randomness in velocity for each particle
-        public Vector2 BaseAcceleration;    //Default Acceleration for spawned particles
-        public Vector2 AccelerationSpread;   //Randomness in Acceleration for each particle
+        protected static Random Rand = new Random();
+        protected Vector2 SourcePosition;  //Point from which new particles spawn
+        protected Vector2 PositionSpread;  //Randomness in spawn location for each particle
+        protected Vector2 BaseVelocity;    //Default velocity for spawned particles
+        protected Vector2 VelocitySpread;   //Randomness in velocity for each particle
+        protected Vector2 BaseAcceleration;    //Default Acceleration for spawned particles
+        protected Vector2 AccelerationSpread;   //Randomness in Acceleration for each particle
         public float DefaultParticleLife, ParticleLifeSpread;     //Default particle lifetime (see particle class)
-        public int SpawnDensity;        //number of particles created per spawn call
+        protected int SpawnDensity;        //number of particles created per spawn call
         protected List<Particle> mParticles;      //list of living particles
 
         /// <summary>

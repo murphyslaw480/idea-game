@@ -107,6 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlackHole.cs" />
+    <Compile Include="BlackHoleParticle.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="ExhaustParticle.cs" />
     <Compile Include="Fire.cs" />
