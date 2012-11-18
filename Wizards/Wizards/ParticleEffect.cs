@@ -92,6 +92,28 @@ namespace Wizards
         }
 
         /// <summary>
+        /// Spawn a particle that travels toward a destination
+        /// For use within BlackHole
+        /// </summary>
+        /// <param name="particle">particle to spawn</param>
+        /// <param name="destination">end position of particle</param>
+        /// <param name="baseVelocity">velocity to be rotated to point at destination</param>
+        /// <param name="baseAcceleration">acceleration to be rotated to point at destination</param>
+        protected void AddNewParticle(Particle particle, Vector2 destination, Vector2 baseVelocity, Vector2 baseAcceleration)
+        {
+            //add randomness in positioning, movement, and life
+            particle.Position = addRandomSpread(SourcePosition, PositionSpread);
+            float angle = (float)Math.Atan2(destination.Y - particle.Position.Y, destination.X - particle.Position.X);
+            Matrix rotMatrix = Matrix.CreateRotationZ(angle);
+            particle.Velocity = Vector2.Zero;
+            particle.Acceleration = Vector2.Zero;
+            /*particle.Velocity = addRandomSpread(Vector2.Transform(BaseVelocity, rotMatrix), VelocitySpread);
+            particle.Acceleration = addRandomSpread(Vector2.Transform(BaseAcceleration, rotMatrix), AccelerationSpread);*/
+            particle.LifeTime = addRandomSpread(DefaultParticleLife, ParticleLifeSpread);
+            mParticles.Add(particle);
+        }
+
+        /// <summary>
         /// For internal use within the Spawn method of ParticleEffect and its subclasses
         /// Sets the particle's position, velocity, acceleration, and lifetime
         /// Velocity and acceleration are rotated by angle degrees

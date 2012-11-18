@@ -29,7 +29,6 @@ namespace Wizards
         MouseIcon mMouseIconSprite = new MouseIcon();
 
         BlackHole blackHole;
-        static Vector2 blackHolePosition = new Vector2(200, 200);
 
 
         public Game1()
@@ -54,6 +53,8 @@ namespace Wizards
             totalForFireElapsed = TimeSpan.FromMilliseconds(200);
             totalForSpawnElapsed = TimeSpan.Zero;
 
+            //create a black hole in bottom left of screen
+            Vector2 blackHolePosition = new Vector2(30, graphics.GraphicsDevice.Viewport.Height - 30);
             blackHole = new BlackHole(blackHolePosition, Vector2.Zero, Vector2.Zero);
 
             base.Initialize();
