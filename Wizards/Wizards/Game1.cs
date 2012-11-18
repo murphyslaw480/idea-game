@@ -25,7 +25,7 @@ namespace Wizards
         TimeSpan totalForFireElapsed;
         TimeSpan minForSpawn = TimeSpan.FromMilliseconds(5000);
         TimeSpan totalForSpawnElapsed;
-        Knight player = new Knight();
+        Astronaut player = new Astronaut();
         MouseIcon mMouseIconSprite = new MouseIcon();
 
         BlackHole blackHole;
@@ -48,7 +48,7 @@ namespace Wizards
             // TODO: Add your initialization logic here
             //balls.Add(new Knight());
             //balls.Add(new MouseIcon());
-            player = new Knight();
+            player = new Astronaut();
             mMouseIconSprite = new MouseIcon();
             totalForFireElapsed = TimeSpan.FromMilliseconds(200);
             totalForSpawnElapsed = TimeSpan.Zero;

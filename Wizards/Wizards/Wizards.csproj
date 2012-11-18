@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Astronaut.cs" />
     <Compile Include="BlackHole.cs" />
     <Compile Include="BlackHoleParticle.cs" />
     <Compile Include="Enemy.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="MouseIcon.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEffect.cs" />
+    <Compile Include="PhysicalSprite.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
