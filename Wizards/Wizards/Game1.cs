@@ -102,7 +102,7 @@ namespace Wizards
 
             // TODO: Add your update logic here
             mMouseIconSprite.Update();
-            player.Update(gameTime, graphics);
+            player.Update(gameTime, graphics, mMouseIconSprite.Position);
             MouseState ms = Mouse.GetState();
             UpdateFire(ms, gameTime);
             SpawnEnemy(gameTime);

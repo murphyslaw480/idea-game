@@ -20,7 +20,7 @@ namespace Wizards
         public Rectangle Size;
 
         //The amount to increase/decrease the size of the original sprite. 
-        private float mScale = 0.1f;
+        private float mScale = 1.0f;
 
         private float angle = 0.0f;
 
@@ -28,7 +28,9 @@ namespace Wizards
         public Vector2 Position = new Vector2(0, 0);
 
         //The texture object used when drawing the sprite
-        private Texture2D mSpriteTexture;
+        //Note: I changed this from private to protected to allow physicalSprite
+        //to adjust texture based on direction facing. -Ryan
+        protected Texture2D mSpriteTexture;
 
         //Load the texture for the sprite using the Content Pipeline
         public void LoadContent(ContentManager theContentManager, string theAssetName)

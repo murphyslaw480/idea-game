@@ -12,7 +12,7 @@ namespace Wizards
 {
     class Astronaut : PhysicalSprite
     {
-        const string ASTRONAUT_ASSETNAME = "Knight";
+        const string ASTRONAUT_ASSETNAME = "astronaut";
         const int START_POSITION_X = 0;
         const int START_POSITION_Y = 0;
         const float THRUSTER_FORCE = 10000;
@@ -23,7 +23,8 @@ namespace Wizards
         const int MOVE_RIGHT = 1;
         const float THRUSTER_PARTICLE_VELOCITY = 120.0f;
         const float THRUSTER_PARTICLE_DECELERATION = 500.0f;
-        const float ASTRONAUT_NATURAL_DECELERATION = 20.0f;
+        const float ASTRONAUT_NATURAL_DECELERATION = 10.0f;
+        const float ASTRONAUT_MAX_SPEED = 500.0f;
         //Particle Effect Parameters
         private ThrusterParticleEffect mDownwardThrusterEffect;
 
@@ -35,7 +36,7 @@ namespace Wizards
         KeyboardState mPreviousKeyboardState;
 
         public Astronaut()
-            :base(ASTRONAUT_MASS, ASTRONAUT_NATURAL_DECELERATION)
+            :base(ASTRONAUT_MASS, ASTRONAUT_NATURAL_DECELERATION, ASTRONAUT_MAX_SPEED)
         {
         }
 
@@ -48,7 +49,7 @@ namespace Wizards
             base.LoadContent(theContentManager, ASTRONAUT_ASSETNAME);
         }
 
-        public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics)
+        public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Vector2 theFocusPoint)
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
             UpdateMovement(aCurrentKeyboardState);
@@ -56,7 +57,7 @@ namespace Wizards
             //TODO: Add a PositionVector property to sprite class
             //Reposition Downward Thruster to MidBottom of rect
             mDownwardThrusterEffect.Update(theGameTime, new Vector2(Position.X + Size.Center.X, Position.Y + Size.Center.Y));
-            base.Update(theGameTime, graphics);
+            base.Update(theGameTime, graphics, theFocusPoint);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
