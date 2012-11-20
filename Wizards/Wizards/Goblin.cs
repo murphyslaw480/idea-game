@@ -12,8 +12,9 @@ namespace Wizards
     {
         const float GOBLIN_MASS = 20.0f;
         const float GOBLIN_DECELERATION = 5.0f; 
-        const float GOBLIN_MAX_SPEED = 500.0f;
-        const float GOBLIN_MOVEMENT_FORCE = 10000.0f;
+        const float GOBLIN_MAX_SPEED = 300.0f;
+        const float GOBLIN_MOVEMENT_FORCE = 15000.0f;
+        const float GOBLIN_SCALE = 0.2f;
         const string GOBLIN_ASSETNAME = "goblin";
 
         public Goblin(Vector2 startPosition)
@@ -25,7 +26,7 @@ namespace Wizards
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, GOBLIN_ASSETNAME);
-            Scale = 1.0f;
+            Scale = GOBLIN_SCALE;
         }
     }
 }

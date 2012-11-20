@@ -28,7 +28,7 @@ namespace Wizards
 
         private Vector2 directionTo(Vector2 targetPosition)
         {
-            Vector2 direction = targetPosition - Position;
+            Vector2 direction = targetPosition - Center;
             direction.Normalize();
             return direction;
         }

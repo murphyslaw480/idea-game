@@ -131,7 +131,7 @@ namespace Wizards
         /// <returns></returns>
         private Direction getDirection(Vector2 focusPoint)
         {
-            Vector2 difference = focusPoint - Position;
+            Vector2 difference = focusPoint - Center;
             float angle = (float)Math.Atan2(difference.X, -difference.Y);
             if (angle > -Math.PI / 4 && angle < Math.PI / 4)
                 return Direction.North;

@@ -20,7 +20,7 @@ namespace Wizards
         SpriteBatch spriteBatch;
         
         List<Fire> balls = new List<Fire>();
-        List<Enemy> enemies = new List<Enemy>();
+        List<Goblin> goblins = new List<Goblin>();
         TimeSpan minForFire = TimeSpan.FromMilliseconds(200);
         TimeSpan totalForFireElapsed;
         TimeSpan minForSpawn = TimeSpan.FromMilliseconds(5000);
@@ -105,15 +105,17 @@ namespace Wizards
             player.Update(gameTime, graphics, mMouseIconSprite.Position, blackHole.gravity);
             MouseState ms = Mouse.GetState();
             UpdateFire(ms, gameTime);
-            SpawnEnemy(gameTime);
+            SpawnGoblin(gameTime);
             foreach (Fire a in balls) // Loop through List with foreach
             {
                 a.Update(gameTime);
             }
-            foreach (Enemy a in enemies) // Loop through List with foreach
+            
+            foreach (Goblin g in goblins) // Loop through List with foreach
             {
-                a.Update(gameTime, player.Position, player.Size);
+                g.Update(gameTime, graphics, player.Position, blackHole.gravity);
             }
+
             removeLostBalls();
             checkFireEnemyCollision();
             blackHole.Update(gameTime);
@@ -123,22 +125,22 @@ namespace Wizards
         private void checkFireEnemyCollision()
         {
             List<Fire> fireToDelete = new List<Fire>();
-            List<Enemy> enemyToDelete = new List<Enemy>();
+            List<Goblin> enemyToDelete = new List<Goblin>();
             float firePosX, firePosY, enemyPosX, enemyPosY, enemyOffsetX, enemyOffsetY;
             foreach (Fire a in balls)
             {
                 firePosX = a.Position.X + (a.Size.Width/2);
                 firePosY = a.Position.Y + (a.Size.Width/2);
-                foreach (Enemy b in enemies)
+                foreach (Goblin g in goblins)
                 {
-                    enemyPosX = b.Position.X;
-                    enemyPosY = b.Position.Y;
-                    enemyOffsetX = b.Position.X + b.Size.Width;
-                    enemyOffsetY = b.Position.Y + b.Size.Width;
+                    enemyPosX = g.Position.X;
+                    enemyPosY = g.Position.Y;
+                    enemyOffsetX = g.Position.X + g.Size.Width;
+                    enemyOffsetY = g.Position.Y + g.Size.Width;
                     if (firePosX > enemyPosX && firePosX < enemyOffsetX && firePosY > enemyPosY && firePosY < enemyOffsetY)
                     {
                         fireToDelete.Add(a);
-                        enemyToDelete.Add(b);
+                        enemyToDelete.Add(g);
                     }
                 }
             }
@@ -146,9 +148,9 @@ namespace Wizards
             {
                 balls.Remove(a);
             }
-            foreach (Enemy a in enemyToDelete)
+            foreach (Goblin g in enemyToDelete)
             {
-                enemies.Remove(a);
+                goblins.Remove(g);
             }
         }
 
@@ -169,14 +171,14 @@ namespace Wizards
             }
         }
 
-        private void SpawnEnemy(GameTime gameTime)
+        private void SpawnGoblin(GameTime gameTime)
         {
-            if (((totalForSpawnElapsed += gameTime.ElapsedGameTime) > minForSpawn) && enemies.Count < 5)
+            if (((totalForSpawnElapsed += gameTime.ElapsedGameTime) > minForSpawn) && goblins.Count < 5)
             {
-                Enemy a = new Enemy(graphics);
-                a.LoadContent(this.Content);
+                Goblin g = new Goblin(Vector2.Zero);
+                g.LoadContent(this.Content);
                 totalForSpawnElapsed = TimeSpan.Zero;
-                enemies.Add(a);
+                goblins.Add(g);
             }
         }
 
@@ -208,9 +210,9 @@ namespace Wizards
             {
                 a.Draw(spriteBatch);
             }
-            foreach (Enemy a in enemies) // Loop through List with foreach
+            foreach (Goblin g in goblins) // Loop through List with foreach
             {
-                a.Draw(spriteBatch);
+                g.Draw(spriteBatch);
             }
             player.Draw(spriteBatch);
             blackHole.Draw(spriteBatch);
