@@ -89,11 +89,20 @@ namespace Wizards
         public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 theFocusPoint)
         {
             lookAtThis(theFocusPoint);
-            _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
-            controlVelocity();
-            //apply velocity to Sprite Update method - which will also check screen bounds
-            base.Update(theGameTime, _velocity, new Vector2(1, 1), theGraphics);
-            _acceleration = Vector2.Zero;
+            Update(theGameTime, theGraphics);
+        }
+
+        public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 theFocusPoint, Gravity theGravity)
+        {
+            Update(theGameTime, theGraphics, theFocusPoint);
+            applyGravity(theGravity, theGameTime);
+        }
+
+        private void applyGravity(Gravity gravity, GameTime theGameTime)
+        {
+            Vector2 direction = gravity.Position - Position;
+            direction.Normalize();
+            _acceleration += gravity.Magnitude * direction * (float)theGameTime.ElapsedGameTime.TotalSeconds;
         }
 
         /// <summary>

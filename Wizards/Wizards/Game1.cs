@@ -29,7 +29,7 @@ namespace Wizards
         MouseIcon mMouseIconSprite = new MouseIcon();
 
         BlackHole blackHole;
-
+        const float blackHoleGravity = 30000f;
 
         public Game1()
         {
@@ -55,7 +55,7 @@ namespace Wizards
 
             //create a black hole in bottom left of screen
             Vector2 blackHolePosition = new Vector2(30, graphics.GraphicsDevice.Viewport.Height - 30);
-            blackHole = new BlackHole(blackHolePosition, Vector2.Zero, Vector2.Zero);
+            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, Vector2.Zero, Vector2.Zero);
 
             base.Initialize();
         }
@@ -102,7 +102,7 @@ namespace Wizards
 
             // TODO: Add your update logic here
             mMouseIconSprite.Update();
-            player.Update(gameTime, graphics, mMouseIconSprite.Position);
+            player.Update(gameTime, graphics, mMouseIconSprite.Position, blackHole.gravity);
             MouseState ms = Mouse.GetState();
             UpdateFire(ms, gameTime);
             SpawnEnemy(gameTime);

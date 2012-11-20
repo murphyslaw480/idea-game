@@ -9,6 +9,7 @@ namespace Wizards
 {
     class BlackHole : ParticleEffect
     {
+        public readonly Gravity gravity;
         //Default particle spawning variance parameters -- play around till it looks right
         private const float defaultParticleLife = 0.6f;
         private const float defaultParticleLifeSpread = 0.08f;
@@ -19,21 +20,25 @@ namespace Wizards
         static Vector2 defaultVelocitySpread = new Vector2(0, 0);
         static Vector2 defaultAccelerationSpread = new Vector2(0, 0);
 
-        public BlackHole(Vector2 thePosition)
+        public BlackHole(float theGravity, Vector2 thePosition)
             : base(thePosition, defaultPositionSpread,
                    defaultParticleVelocity, defaultVelocitySpread,
                    defaultParticleAcceleration, defaultAccelerationSpread,
                    defaultParticleLife, defaultParticleLifeSpread,
                    defaultSpawnDensity)
-        { }
+        {
+            gravity = new Gravity(thePosition, theGravity);
+        }
         
-        public BlackHole(Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration)
+        public BlackHole(float theGravity, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration)
             : base(thePosition, defaultPositionSpread,
                    theVelocity, defaultVelocitySpread,
                    theAcceleration, defaultAccelerationSpread,
                    defaultParticleLife, defaultParticleLifeSpread,
                    defaultSpawnDensity)
-        { }
+        {
+            gravity = new Gravity(thePosition, theGravity);
+        }
 
         public void Update(GameTime theGameTime)
         {
