@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 
-
 namespace Wizards
 {
     class Sprite
@@ -20,7 +19,7 @@ namespace Wizards
         public Rectangle Size;
 
         //The amount to increase/decrease the size of the original sprite. 
-        private float mScale = 1.0f;
+        private float mScale = 0.3f;
 
         private float angle = 0.0f;
 

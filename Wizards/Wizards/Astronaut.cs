@@ -43,10 +43,11 @@ namespace Wizards
         public void LoadContent(ContentManager theContentManager)
         {
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
+            base.LoadContent(theContentManager, ASTRONAUT_ASSETNAME);
+            Scale = 1.0f;
             mDownwardThrusterEffect = new ThrusterParticleEffect(new Vector2(Size.Center.X, Size.Center.Y),
                                                                  new Vector2(0, -THRUSTER_PARTICLE_VELOCITY),
                                                                  new Vector2(0, THRUSTER_PARTICLE_DECELERATION));
-            base.LoadContent(theContentManager, ASTRONAUT_ASSETNAME);
         }
 
         public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Vector2 theFocusPoint)

@@ -68,7 +68,7 @@ namespace Wizards
             directionalTextures[(int)Direction.South] = theContentManager.Load<Texture2D>(theAssetName + "_south");
             directionalTextures[(int)Direction.West] = theContentManager.Load<Texture2D>(theAssetName + "_west");
             //mSpriteTexture = directionalTextures[(int)Direction.North];
-            mSpriteTexture = theContentManager.Load<Texture2D>("CatCreature");
+            mSpriteTexture = directionalTextures[(int)Direction.North];
             Size = new Rectangle(0, 0, (int)(mSpriteTexture.Width * Scale), (int)(mSpriteTexture.Height * Scale));
         }
 
