@@ -58,6 +58,13 @@ namespace Wizards
             }
         }
 
+        public Vector2 Center
+        {
+            get {
+                return new Vector2(Position.X + Size.Center.X, Position.Y + Size.Center.Y);
+            }
+        }
+
         //Player Update
         public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection, GraphicsDeviceManager graphics)
         {

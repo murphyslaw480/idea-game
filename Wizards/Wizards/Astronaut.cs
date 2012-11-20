@@ -57,7 +57,7 @@ namespace Wizards
             mPreviousKeyboardState = aCurrentKeyboardState;
             //TODO: Add a PositionVector property to sprite class
             //Reposition Downward Thruster to MidBottom of rect
-            mDownwardThrusterEffect.Update(theGameTime, new Vector2(Position.X + Size.Center.X, Position.Y + Size.Center.Y));
+            mDownwardThrusterEffect.Update(theGameTime, Center);
             base.Update(theGameTime, graphics, theFocusPoint);
         }
 

@@ -92,8 +92,23 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="astronaut.bmp">
-      <Name>astronaut</Name>
+    <Compile Include="goblin_east.png">
+      <Name>goblin_east</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="goblin_north.png">
+      <Name>goblin_north</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="goblin_south.png">
+      <Name>goblin_south</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="goblin_west.png">
+      <Name>goblin_west</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
