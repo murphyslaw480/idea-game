@@ -14,8 +14,8 @@ namespace Wizards
     {
         protected readonly float MovementForce;
 
-        public MeleeEnemy(float theMass, float theDeceleration, float theMaxSpeed, float theMovementForce)
-            :base(theMass, theDeceleration, theMaxSpeed)
+        public MeleeEnemy(float theMass, float originalScale, float theDeceleration, float theMaxSpeed, float theMovementForce)
+            :base(theMass, originalScale, theDeceleration, theMaxSpeed)
         {
             MovementForce = theMovementForce;
         } 

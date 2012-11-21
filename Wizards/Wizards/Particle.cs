@@ -54,7 +54,7 @@ namespace Wizards
             Angle = theAngle;
         }
 
-        public void Update(GameTime theGameTime)
+        public virtual void Update(GameTime theGameTime)
         {
             Velocity += Acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
             Position += Velocity * (float)theGameTime.ElapsedGameTime.TotalSeconds;

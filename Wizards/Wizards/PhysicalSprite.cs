@@ -15,6 +15,7 @@ namespace Wizards
     /// </summary>
     class PhysicalSprite : Sprite
     {
+        private const float TOTAL_TIME_TO_DESTROY_SPRITE = 1.0f;
         //change in position per second (px/s)
         private Vector2 _velocity = Vector2.Zero;
         //change in velocity (px / s^2)
@@ -25,6 +26,18 @@ namespace Wizards
         private readonly float naturalDeceleration;
         //magnitude of _velocity cannot exceed maxSpeed
         private readonly float maxSpeed;
+        //for being eaten by black hole:
+        protected readonly float originalScale;
+        private float timeUntilDestroyed = TOTAL_TIME_TO_DESTROY_SPRITE;
+
+        public enum LifeState
+        {
+            Living,
+            BeingEatenByBlackHole,
+            Destroyed
+        };
+        public LifeState SpriteLifeState;
+
         //used to indicate what direction the sprite is facing
         public enum Direction
         {
@@ -37,17 +50,18 @@ namespace Wizards
         //order: [NORTH, EAST, SOUTH, WEST]
         private Texture2D[] directionalTextures;
 
-        public PhysicalSprite(float mass)
+        public PhysicalSprite(float mass, float originalScale)
             :base()
         {
             Mass = mass;
+            this.originalScale = originalScale;
             naturalDeceleration = 0.0f;
             //create space to store one texture for each direction sprite can face
             directionalTextures = new Texture2D[Enum.GetValues(typeof(Direction)).Length];
         }
 
-        public PhysicalSprite(float mass, float theNaturalDeceleration, float theMaxSpeed)
-            :this(mass)
+        public PhysicalSprite(float mass, float originalScale, float theNaturalDeceleration, float theMaxSpeed)
+            :this(mass, originalScale)
         {
             naturalDeceleration = theNaturalDeceleration;
             maxSpeed = theMaxSpeed;
@@ -62,6 +76,7 @@ namespace Wizards
         /// <param name="theAssetName"></param>
         public new void LoadContent(ContentManager theContentManager, string theAssetName)
         {
+            shade = Color.White;
             AssetName = theAssetName;
             directionalTextures[(int)Direction.North] = theContentManager.Load<Texture2D>(theAssetName + "_north");
             directionalTextures[(int)Direction.East] = theContentManager.Load<Texture2D>(theAssetName + "_east");
@@ -69,6 +84,7 @@ namespace Wizards
             directionalTextures[(int)Direction.West] = theContentManager.Load<Texture2D>(theAssetName + "_west");
             //mSpriteTexture = directionalTextures[(int)Direction.North];
             mSpriteTexture = directionalTextures[(int)Direction.North];
+            Scale = originalScale;
             Size = new Rectangle(0, 0, (int)(mSpriteTexture.Width * Scale), (int)(mSpriteTexture.Height * Scale));
         }
 
@@ -79,11 +95,33 @@ namespace Wizards
 
         public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics)
         {
-            _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
-            controlVelocity();
-            //apply velocity to Sprite Update method - which will also check screen bounds
-            base.Update(theGameTime, _velocity, new Vector2(1, 1), theGraphics);
-            _acceleration = Vector2.Zero;
+            switch (SpriteLifeState)
+            {
+                case (LifeState.Living):
+                    {
+                        _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+                        controlVelocity();
+                        //apply velocity to Sprite Update method - which will also check screen bounds
+                        base.Update(theGameTime, _velocity, new Vector2(1, 1), theGraphics);
+                        _acceleration = Vector2.Zero;
+                        break;
+                    }
+                case (LifeState.BeingEatenByBlackHole):
+                    {
+                        timeUntilDestroyed -= (float)theGameTime.ElapsedGameTime.TotalSeconds;
+                        Scale = originalScale * (timeUntilDestroyed) / TOTAL_TIME_TO_DESTROY_SPRITE;
+                        angle += 1.0f;
+                        shade.A = (byte)((timeUntilDestroyed / TOTAL_TIME_TO_DESTROY_SPRITE) * 200);
+                        if (timeUntilDestroyed <= 0.0)
+                        {
+                            //note - these values should be restored when spit back out of black hole
+                            shade.A = 0;
+                            SpriteLifeState = LifeState.Destroyed;
+                        }
+                        break;
+                    }
+
+            }
         }
 
         public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 theFocusPoint)
@@ -101,8 +139,9 @@ namespace Wizards
         private void applyGravity(Gravity gravity, GameTime theGameTime)
         {
             Vector2 direction = gravity.Position - Position;
+            float distance = direction.Length();
             direction.Normalize();
-            _acceleration += gravity.Magnitude * direction * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+            _acceleration += gravity.Magnitude * direction * (float)theGameTime.ElapsedGameTime.TotalSeconds / (distance * 0.01f);
         }
 
         /// <summary>

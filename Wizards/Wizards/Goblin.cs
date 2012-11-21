@@ -18,7 +18,7 @@ namespace Wizards
         const string GOBLIN_ASSETNAME = "goblin";
 
         public Goblin(Vector2 startPosition)
-            :base(GOBLIN_MASS, GOBLIN_DECELERATION, GOBLIN_MAX_SPEED, GOBLIN_MOVEMENT_FORCE)
+            :base(GOBLIN_MASS, GOBLIN_SCALE, GOBLIN_DECELERATION, GOBLIN_MAX_SPEED, GOBLIN_MOVEMENT_FORCE)
         {
             Position = startPosition;
         } 
@@ -26,7 +26,6 @@ namespace Wizards
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, GOBLIN_ASSETNAME);
-            Scale = GOBLIN_SCALE;
         }
     }
 }

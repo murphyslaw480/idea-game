@@ -25,28 +25,6 @@ namespace Wizards
                    defaultSpawnDensity)
         { }
 
-        public void Update(GameTime theGameTime)
-        {
-            //Traverse in reverse to allow removal
-            for(int i = mParticles.Count - 1 ; i >= 0 ; i--)
-            {
-                if (mParticles[i].LifeTime <= 0)
-                {
-                    mParticles.Remove(mParticles[i]);
-                }
-
-                else
-                {//must explicitly cast to ExhaustParticle to get proper update method
-                    ((ExhaustParticle)(mParticles[i])).Update(theGameTime);
-                }
-            }
-        }
-
-        public void Update(GameTime theGameTime, Vector2 newPosition)
-        {
-            SourcePosition = newPosition;
-            this.Update(theGameTime);
-        }
 
         /// <summary>
         /// Spawn new exhaust particles at the given angle

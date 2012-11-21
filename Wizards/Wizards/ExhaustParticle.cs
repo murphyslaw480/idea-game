@@ -26,7 +26,7 @@ namespace Wizards
             : base(theLife, thePosition, theVelocity, theAcceleration, Color.Red, 2.0f)
         {}
 
-        public void Update(GameTime theGameTime)
+        public override void Update(GameTime theGameTime)
         {
             //exhaust particles will expand every frame and fade to gray before disappearing (to look like smoke)
             Scale += scalePerMilliSecond * theGameTime.ElapsedGameTime.Milliseconds;

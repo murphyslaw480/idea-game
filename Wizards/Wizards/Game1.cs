@@ -29,7 +29,7 @@ namespace Wizards
         MouseIcon mMouseIconSprite = new MouseIcon();
 
         BlackHole blackHole;
-        const float blackHoleGravity = 30000f;
+        const float blackHoleGravity = 100000f;
 
         public Game1()
         {
@@ -55,7 +55,7 @@ namespace Wizards
 
             //create a black hole in bottom left of screen
             Vector2 blackHolePosition = new Vector2(30, graphics.GraphicsDevice.Viewport.Height - 30);
-            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, Vector2.Zero, Vector2.Zero);
+            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, 100.0f);
 
             base.Initialize();
         }
@@ -110,10 +110,33 @@ namespace Wizards
             {
                 a.Update(gameTime);
             }
-            
-            foreach (Goblin g in goblins) // Loop through List with foreach
+
+            //iterate in reverse so elements can be deleted while iterating
+            //TODO -- include hit detection in this loop
+            Goblin g;
+            for (int i = goblins.Count - 1; i >= 0 ; i--)
             {
-                g.Update(gameTime, graphics, player.Position, blackHole.gravity);
+                g = goblins[i];
+                switch (g.SpriteLifeState) {
+                    case(PhysicalSprite.LifeState.Living) :
+                    {
+                        g.Update(gameTime, graphics, player.Position, blackHole.gravity);
+                        break;
+                    }
+                    case (PhysicalSprite.LifeState.BeingEatenByBlackHole):
+                    {
+                        g.Update(gameTime, graphics, player.Position, blackHole.gravity);
+                        break;
+                    }
+                    case (PhysicalSprite.LifeState.Destroyed):
+                    {
+                        goblins.Remove(g);
+                        break;
+                    }
+
+                }
+                            
+                blackHole.TryToEat(g);
             }
 
             removeLostBalls();

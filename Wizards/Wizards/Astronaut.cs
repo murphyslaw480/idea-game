@@ -23,8 +23,9 @@ namespace Wizards
         const int MOVE_RIGHT = 1;
         const float THRUSTER_PARTICLE_VELOCITY = 120.0f;
         const float THRUSTER_PARTICLE_DECELERATION = 500.0f;
-        const float ASTRONAUT_NATURAL_DECELERATION = 10.0f;
+        const float ASTRONAUT_NATURAL_DECELERATION = 50.0f;
         const float ASTRONAUT_MAX_SPEED = 500.0f;
+        const float ASTRONAUT_SCALE = 1.0f;
         //Particle Effect Parameters
         private ThrusterParticleEffect mDownwardThrusterEffect;
 
@@ -36,7 +37,7 @@ namespace Wizards
         KeyboardState mPreviousKeyboardState;
 
         public Astronaut()
-            :base(ASTRONAUT_MASS, ASTRONAUT_NATURAL_DECELERATION, ASTRONAUT_MAX_SPEED)
+            :base(ASTRONAUT_MASS, ASTRONAUT_SCALE, ASTRONAUT_NATURAL_DECELERATION, ASTRONAUT_MAX_SPEED)
         {
         }
 
@@ -44,7 +45,6 @@ namespace Wizards
         {
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
             base.LoadContent(theContentManager, ASTRONAUT_ASSETNAME);
-            Scale = 1.0f;
             mDownwardThrusterEffect = new ThrusterParticleEffect(new Vector2(Size.Center.X, Size.Center.Y),
                                                                  new Vector2(0, -THRUSTER_PARTICLE_VELOCITY),
                                                                  new Vector2(0, THRUSTER_PARTICLE_DECELERATION));

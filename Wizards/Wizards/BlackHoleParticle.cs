@@ -26,13 +26,7 @@ namespace Wizards
             blackHoleCenter = theBlackHoleCenter;
         }
 
-        public BlackHoleParticle(Vector2 theBlackHoleCenter, int theLife, Vector2 thePosition, Vector2 theVelocity, Vector2 theAcceleration)
-            : base(theLife, thePosition, theVelocity, theAcceleration, particleColor, startingScale)
-        {
-            blackHoleCenter = theBlackHoleCenter;
-        }
-
-        public void Update(GameTime theGameTime)
+        public override void Update(GameTime theGameTime)
         {
             //black hole particles will scale and rotate each frame
             Scale += scalePerMilliSecond * theGameTime.ElapsedGameTime.Milliseconds;

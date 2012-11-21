@@ -65,8 +65,9 @@ namespace Wizards
 
         /// <summary>
         /// Generate a number of new particles equal to the effect's ParticleDensity
+        /// Override this in subclasses to add specialized particles
         /// </summary>
-        public void Spawn()
+        public virtual void Spawn()
         {
             //spawn a number of particles determined by spawndensity
             for (int i = 0; i < SpawnDensity; i++)
@@ -135,7 +136,7 @@ namespace Wizards
         /// Call Update on each of its particles and remove expired particles
         /// </summary>
         /// <param name="theGameTime">Provides a snapshot of timing values.</param>
-        public void Update(GameTime theGameTime)
+        public virtual void Update(GameTime theGameTime)
         {
             //Traverse in reverse to allow removal
             for(int i = mParticles.Count - 1 ; i >= 0 ; i--)
@@ -153,7 +154,7 @@ namespace Wizards
         /// Use to keep a particle effect anchored to a moving sprite
         /// </summary>
         /// <param name="theGameTime">Provides a snapshot of timing values.</param>
-        public void Update(GameTime theGameTime, Vector2 newPosition)
+        public virtual void Update(GameTime theGameTime, Vector2 newPosition)
         {
             SourcePosition = newPosition;
             this.Update(theGameTime);
