@@ -15,7 +15,8 @@ namespace Wizards
     /// </summary>
     class PhysicalSprite : Sprite
     {
-        private const float TOTAL_TIME_TO_DESTROY_SPRITE = 1.0f;
+        //how long (seconds) it takes black hole to eat sprite
+        private const float TOTAL_TIME_TO_DESTROY_SPRITE = 0.5f;
         //change in position per second (px/s)
         private Vector2 _velocity = Vector2.Zero;
         //change in velocity (px / s^2)

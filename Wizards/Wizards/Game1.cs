@@ -21,6 +21,9 @@ namespace Wizards
         
         List<Fire> balls = new List<Fire>();
         List<Goblin> goblins = new List<Goblin>();
+        //sprites spit out by black hole
+        List<PhysicalSprite> spitSprites = new List<PhysicalSprite>();
+
         TimeSpan minForFire = TimeSpan.FromMilliseconds(200);
         TimeSpan totalForFireElapsed;
         TimeSpan minForSpawn = TimeSpan.FromMilliseconds(5000);
@@ -54,8 +57,8 @@ namespace Wizards
             totalForSpawnElapsed = TimeSpan.Zero;
 
             //create a black hole in bottom left of screen
-            Vector2 blackHolePosition = new Vector2(30, graphics.GraphicsDevice.Viewport.Height - 30);
-            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, 100.0f);
+            Vector2 blackHolePosition = new Vector2(0, graphics.GraphicsDevice.Viewport.Height);
+            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, 10.0f);
 
             base.Initialize();
         }
@@ -102,7 +105,7 @@ namespace Wizards
 
             // TODO: Add your update logic here
             mMouseIconSprite.Update();
-            player.Update(gameTime, graphics, mMouseIconSprite.Position, blackHole.gravity);
+            player.Update(gameTime, graphics, mMouseIconSprite.Position, blackHole.Gravity);
             MouseState ms = Mouse.GetState();
             UpdateFire(ms, gameTime);
             SpawnGoblin(gameTime);
@@ -117,31 +120,32 @@ namespace Wizards
             for (int i = goblins.Count - 1; i >= 0 ; i--)
             {
                 g = goblins[i];
-                switch (g.SpriteLifeState) {
-                    case(PhysicalSprite.LifeState.Living) :
-                    {
-                        g.Update(gameTime, graphics, player.Position, blackHole.gravity);
-                        break;
-                    }
-                    case (PhysicalSprite.LifeState.BeingEatenByBlackHole):
-                    {
-                        g.Update(gameTime, graphics, player.Position, blackHole.gravity);
-                        break;
-                    }
-                    case (PhysicalSprite.LifeState.Destroyed):
-                    {
-                        goblins.Remove(g);
-                        break;
-                    }
-
-                }
-                            
                 blackHole.TryToEat(g);
+                if (g.SpriteLifeState == PhysicalSprite.LifeState.Destroyed)
+                    goblins.Remove(g);
+                else
+                    g.Update(gameTime, this.graphics, player.Position, blackHole.Gravity);
+            }
+
+            PhysicalSprite ps;
+            for (int i = spitSprites.Count - 1; i >= 0 ; i--)
+            {
+                ps = spitSprites[i];
+                if (outOfBounds(ps))
+                    spitSprites.Remove(ps);
+                else
+                    ps.Update(gameTime, this.graphics, player.Position, blackHole.Gravity);
             }
 
             removeLostBalls();
             checkFireEnemyCollision();
             blackHole.Update(gameTime);
+            //check for sprites that black hole spits out
+            PhysicalSprite SpitSprite = blackHole.SpriteToSpit;
+            if (SpitSprite != null)
+            {
+                spitSprites.Add(SpitSprite);
+            }
             base.Update(gameTime);
         }
 
@@ -229,20 +233,34 @@ namespace Wizards
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            blackHole.Draw(spriteBatch);
+
             foreach (Fire a in balls) // Loop through List with foreach
             {
                 a.Draw(spriteBatch);
             }
+
             foreach (Goblin g in goblins) // Loop through List with foreach
             {
                 g.Draw(spriteBatch);
             }
+
+            foreach (PhysicalSprite ps in spitSprites) // Loop through List with foreach
+            {
+                ps.Draw(spriteBatch);
+            }
+
             player.Draw(spriteBatch);
-            blackHole.Draw(spriteBatch);
             mMouseIconSprite.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private bool outOfBounds(Sprite s)
+        {
+            return (s.Position.X < 0 || s.Position.Y < 0 || s.Position.X > graphics.GraphicsDevice.Viewport.Width || s.Position.Y > graphics.GraphicsDevice.Viewport.Height);
         }
     }
 }
