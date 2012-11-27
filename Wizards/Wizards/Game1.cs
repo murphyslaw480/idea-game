@@ -29,6 +29,7 @@ namespace Wizards
         TimeSpan minForSpawn = TimeSpan.FromMilliseconds(5000);
         TimeSpan totalForSpawnElapsed;
         Astronaut player = new Astronaut();
+        //player's hookshot
         MouseIcon mMouseIconSprite = new MouseIcon();
 
         BlackHole blackHole;
@@ -121,6 +122,7 @@ namespace Wizards
             {
                 g = goblins[i];
                 blackHole.TryToEat(g);
+                player.HookShot.CheckCollision(g);
                 if (g.SpriteLifeState == PhysicalSprite.LifeState.Destroyed)
                     goblins.Remove(g);
                 else

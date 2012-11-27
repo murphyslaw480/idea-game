@@ -11,9 +11,9 @@ namespace Wizards
     class HookShot
     {
         //spacing between chain links to draw between handle and hook
-        private const float DISTANCE_PER_LINK = 10.0f; 
+        private const float DISTANCE_PER_LINK = 30.0f; 
         //speed with which hook moves
-        private const float SPEED = 50.0f;
+        private const float SPEED = 2.0f;
         //magnitute of force with which hook pulls
         private const float HOOK_FORCE = 200.0f;
 
@@ -59,7 +59,18 @@ namespace Wizards
             }
         }
 
-        public void Update(GameTime theGameTime)
+        /// <summary>
+        /// Create a new hookshot
+        /// </summary>
+        /// <param name="ownerSprite">Sprite that holds the hookshot</param>
+        public HookShot(PhysicalSprite ownerSprite)
+        {
+            _holderSprite = ownerSprite;
+            _hookPosition = ownerSprite.Center;
+            _handlePosition = ownerSprite.Center;
+        }
+
+        public void Update(GameTime theGameTime, GraphicsDevice theGraphics)
         {
             //always keep handle with holder
             _handlePosition = _holderSprite.Center;
@@ -68,6 +79,11 @@ namespace Wizards
                 case State.Fired:
                     {
                         _hookPosition += _direction * SPEED;
+                        if (outOfBounds(theGraphics))        //reset if out of bounds
+                        {
+                            _hookState = State.Idle;
+                            _hookPosition = _holderSprite.Center;
+                        }
                         break;
                     }
                 case State.Connected:
@@ -88,8 +104,19 @@ namespace Wizards
                     }
 
             }
+        }
 
-
+        private bool outOfBounds(GraphicsDevice graphics)
+        {
+            if (_hookPosition.X < 0
+                || _hookPosition.Y < 0
+                || (_hookPosition.X > graphics.Viewport.Width)
+                || (_hookPosition.Y > graphics.Viewport.Height))
+            {
+                return true;
+            }
+            else
+                return false;
         }
 
         /// <summary>
@@ -132,7 +159,7 @@ namespace Wizards
             }
         }
 
-        public void CheckCollision(List<PhysicalSprite> sprites)
+        public void CheckCollision(PhysicalSprite sprite)
         {
             //only check collisions if fired
             if (_hookState != State.Connected)
@@ -140,14 +167,22 @@ namespace Wizards
                 return;
             }
 
-            foreach(PhysicalSprite p in sprites)
-            {
-                if (_hookPosition.Y > p.Top && _hookPosition.Y <= p.Bottom && _hookPosition.X > p.LeftSide && _hookPosition.X > p.RightSide) 
+                if ( sprite.SpriteLifeState == PhysicalSprite.LifeState.Living
+                    && _hookPosition.Y > sprite.Top 
+                    && _hookPosition.Y <= sprite.Bottom 
+                    && _hookPosition.X > sprite.LeftSide 
+                    && _hookPosition.X > sprite.RightSide
+                    ) 
                 {
-                    _hookedSprite = p;
+                    _hookedSprite = sprite;
                     _hookState = State.Connected;
                 }
-            }
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            _hookTexture = content.Load<Texture2D>("hook_claw");
+            _linkTexture = content.Load<Texture2D>("hook_link");
         }
 
         public void Draw(SpriteBatch sb)
@@ -156,10 +191,11 @@ namespace Wizards
             {
                 sb.Draw(_hookTexture, _hookPosition, Color.White);
                 Vector2 nextLinkPosition = _handlePosition;
+                Vector2 chainDirection = Vector2.Normalize(_hookPosition - _handlePosition);
                 int numLinksToDraw = (int)((_hookPosition - _handlePosition).Length() / DISTANCE_PER_LINK);
                 for (int i = 0; i < numLinksToDraw; i++)
                 {
-                    nextLinkPosition += _direction * DISTANCE_PER_LINK;
+                    nextLinkPosition += chainDirection * DISTANCE_PER_LINK;
                     sb.Draw(_linkTexture, nextLinkPosition, Color.White);
                 }
             }

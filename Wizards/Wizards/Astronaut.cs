@@ -28,6 +28,12 @@ namespace Wizards
         const float ASTRONAUT_SCALE = 1.0f;
         //Particle Effect Parameters
         private ThrusterParticleEffect mDownwardThrusterEffect;
+        private HookShot _hookShot;
+
+        public HookShot HookShot
+        {
+            get { return _hookShot; }
+        }
 
         enum State
         {
@@ -39,6 +45,7 @@ namespace Wizards
         public Astronaut()
             :base(ASTRONAUT_MASS, ASTRONAUT_SCALE, ASTRONAUT_NATURAL_DECELERATION, ASTRONAUT_MAX_SPEED)
         {
+            _hookShot = new HookShot(this);
         }
 
         public void LoadContent(ContentManager theContentManager)
@@ -48,6 +55,7 @@ namespace Wizards
             mDownwardThrusterEffect = new ThrusterParticleEffect(new Vector2(Size.Center.X, Size.Center.Y),
                                                                  new Vector2(0, -THRUSTER_PARTICLE_VELOCITY),
                                                                  new Vector2(0, THRUSTER_PARTICLE_DECELERATION));
+            _hookShot.LoadContent(theContentManager);
         }
 
         public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Gravity theGravity, Vector2 theFocusPoint)
@@ -58,12 +66,19 @@ namespace Wizards
             //TODO: Add a PositionVector property to sprite class
             //Reposition Downward Thruster to MidBottom of rect
             mDownwardThrusterEffect.Update(theGameTime, Center);
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                _hookShot.Trigger(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+            }
+
+            _hookShot.Update(theGameTime, graphics.GraphicsDevice);
             base.Update(theGameTime, graphics, theGravity, theFocusPoint);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
             mDownwardThrusterEffect.Draw(theSpriteBatch);
+            _hookShot.Draw(theSpriteBatch);
             base.Draw(theSpriteBatch);
         }
 
