@@ -34,7 +34,7 @@ namespace Wizards
         //magnitude of _velocity cannot exceed maxSpeed
         private readonly float maxSpeed;
         //max speed of a sprite after it is spit out of a black hole
-        private const float maxSpriteProjectileSpeed = 10.0f;
+        private const float maxSpriteProjectileSpeed = 40.0f;
         //for being eaten by black hole:
         protected readonly float originalScale;
         private float timeUntilDestroyed = TOTAL_TIME_TO_DESTROY_SPRITE;
@@ -133,7 +133,9 @@ namespace Wizards
                 case (LifeState.Projectile):
                     {
                         _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
-                        controlVelocity(maxSpriteProjectileSpeed);
+                        float speed = _velocity.Length();
+                        if (speed > maxSpriteProjectileSpeed)
+                            _velocity = _velocity * maxSpriteProjectileSpeed / speed;
                         Position += _velocity;
                         _acceleration = Vector2.Zero;
                         angle += 0.1f * (float)theGameTime.ElapsedGameTime.TotalSeconds;

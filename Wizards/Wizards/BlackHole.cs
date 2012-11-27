@@ -43,12 +43,12 @@ namespace Wizards
         //how much to rotate particle each frame
         private const float rotatePerMilliSecondExploding = -0.001f; 
         //what size to start paticles at
-        private const float startingScaleExploding = 1.0f;
+        private const float startingScaleExploding = 0.1f;
 
         //store eaten sprites to spit back out when exploding
         private List<PhysicalSprite> consumedSprites = new List<PhysicalSprite>();
         //time between spitting back out successive sprites
-        private const float spitTime = 1.3f;
+        private const float spitTime = 0.5f;
         private const float spitTimeVariance = 0.1f;
         private float tillNextSpit;
         private PhysicalSprite spriteToSpit;
@@ -116,8 +116,8 @@ namespace Wizards
                     spriteToSpit.SpriteLifeState = PhysicalSprite.LifeState.Projectile;
                     spriteToSpit.Reset();
                     consumedSprites.Remove(spriteToSpit);
-                    Vector2 spitDirection = new Vector2((float)rand.NextDouble(), (float)rand.NextDouble());
-                    spriteToSpit.Velocity = spitDirection * (float)(0.5 + rand.NextDouble()) * 100000;
+                    Vector2 spitDirection = new Vector2((float)rand.NextDouble(), -(float)rand.NextDouble());
+                    spriteToSpit.Velocity = spitDirection * (float)(0.5 + rand.NextDouble()) * 40;
                     tillNextSpit = spitTime + spitTimeVariance * (1 - 2 * (float)rand.NextDouble());
                 }
             }

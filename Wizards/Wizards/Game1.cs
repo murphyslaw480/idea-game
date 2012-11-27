@@ -58,7 +58,7 @@ namespace Wizards
 
             //create a black hole in bottom left of screen
             Vector2 blackHolePosition = new Vector2(0, graphics.GraphicsDevice.Viewport.Height);
-            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, 10.0f);
+            blackHole = new BlackHole(blackHoleGravity, blackHolePosition, 30.0f);
 
             base.Initialize();
         }
@@ -135,7 +135,7 @@ namespace Wizards
                     spitSprites.Remove(ps);
                 else
                 {
-                    ps.Update(gameTime, this.graphics, blackHole.Gravity);
+                    ps.Update(gameTime, this.graphics);
                 }
             }
 
