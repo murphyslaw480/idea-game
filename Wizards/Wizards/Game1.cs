@@ -153,6 +153,7 @@ namespace Wizards
 
         private void checkFireEnemyCollision()
         {
+            //note: this temporarily also checks hookshot collision
             List<Fire> fireToDelete = new List<Fire>();
             List<Goblin> enemyToDelete = new List<Goblin>();
             float firePosX, firePosY, enemyPosX, enemyPosY, enemyOffsetX, enemyOffsetY;

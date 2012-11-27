@@ -69,6 +69,34 @@ namespace Wizards
             }
         }
 
+        public float Bottom
+        {
+            get {
+                return Position.Y + Size.Bottom;
+            }
+        }
+
+        public float Top
+        {
+            get {
+                return Position.Y;
+            }
+        }
+
+        public float LeftSide
+        {
+            get {
+                return Position.X;
+            }
+        }
+
+        public float RightSide
+        {
+            get {
+                return Position.X + Size.Right;
+            }
+        }
+
         //Player Update
         public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection, GraphicsDeviceManager graphics)
         {

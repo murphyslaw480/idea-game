@@ -115,6 +115,7 @@
     <Compile Include="Fire.cs" />
     <Compile Include="Goblin.cs" />
     <Compile Include="Gravity.cs" />
+    <Compile Include="HookShot.cs" />
     <Compile Include="MeleeEnemy.cs" />
     <Compile Include="MouseIcon.cs" />
     <Compile Include="Particle.cs" />
