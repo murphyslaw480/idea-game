@@ -41,6 +41,7 @@ namespace Wizards
         }
         State mCurrentState = State.Walking;
         KeyboardState mPreviousKeyboardState;
+        MouseState mPreviousMouseState;
 
         public Astronaut()
             :base(ASTRONAUT_MASS, ASTRONAUT_SCALE, ASTRONAUT_NATURAL_DECELERATION, ASTRONAUT_MAX_SPEED)
@@ -61,15 +62,18 @@ namespace Wizards
         public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Gravity theGravity, Vector2 theFocusPoint)
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
+            MouseState aCurrentMouseState = Mouse.GetState();
             UpdateMovement(aCurrentKeyboardState);
             mPreviousKeyboardState = aCurrentKeyboardState;
             //TODO: Add a PositionVector property to sprite class
             //Reposition Downward Thruster to MidBottom of rect
             mDownwardThrusterEffect.Update(theGameTime, Center);
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if (Mouse.GetState().RightButton == ButtonState.Pressed 
+                && mPreviousMouseState.RightButton == ButtonState.Released)
             {
                 _hookShot.Trigger(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
             }
+            mPreviousMouseState = aCurrentMouseState;
 
             _hookShot.Update(theGameTime, graphics.GraphicsDevice);
             base.Update(theGameTime, graphics, theGravity, theFocusPoint);

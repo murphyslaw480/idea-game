@@ -72,7 +72,7 @@ namespace Wizards
         public float Bottom
         {
             get {
-                return Position.Y + Size.Bottom;
+                return Position.Y + Size.Height;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Wizards
         public float RightSide
         {
             get {
-                return Position.X + Size.Right;
+                return Position.X + Size.Width;
             }
         }
 

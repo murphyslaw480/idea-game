@@ -13,9 +13,9 @@ namespace Wizards
         //spacing between chain links to draw between handle and hook
         private const float DISTANCE_PER_LINK = 30.0f; 
         //speed with which hook moves
-        private const float SPEED = 2.0f;
+        private const float SPEED = 15.0f;
         //magnitute of force with which hook pulls
-        private const float HOOK_FORCE = 200.0f;
+        private const float HOOK_FORCE = 10000.0f;
 
         //position of handle and hook
         private Vector2 _handlePosition;
@@ -45,6 +45,15 @@ namespace Wizards
         public State HookState
         {
             get { return _hookState; }
+            private set
+            {
+                if (value == State.Idle)
+                {
+                    _hookedSprite = null;
+                    _hookPosition = _holderSprite.Center;
+                }
+                _hookState = value;
+            }
         }
 
         public PhysicalSprite HookedSprite
@@ -76,22 +85,33 @@ namespace Wizards
             _handlePosition = _holderSprite.Center;
             switch(_hookState)
             {
+                case State.Idle:
+                    {
+                        _hookPosition = _holderSprite.Center;
+                        break;
+                    }
                 case State.Fired:
                     {
                         _hookPosition += _direction * SPEED;
                         if (outOfBounds(theGraphics))        //reset if out of bounds
                         {
-                            _hookState = State.Idle;
-                            _hookPosition = _holderSprite.Center;
+                            HookState = State.Idle;
                         }
                         break;
                     }
                 case State.Connected:
                     {
-                        //keep hook position at sprite
-                        //MODIFY: keep track of location where hook originally hit sprite
-                        _hookPosition = _hookedSprite.Center;
-                        setDirection();
+                        if (_hookedSprite.SpriteLifeState == PhysicalSprite.LifeState.Living)
+                        {
+                            //keep hook position at sprite
+                            //MODIFY: keep track of location where hook originally hit sprite
+                            _hookPosition = _hookedSprite.Center;
+                            setDirection();
+                        }
+                        else
+                        {   //if hooked sprite is no longer living, reset
+                            HookState = State.Idle;
+                        }
                         break;
                     }
                 case State.Pulling:
@@ -142,18 +162,17 @@ namespace Wizards
                 case State.Idle:
                     {
                         _direction = Vector2.Normalize(target - _handlePosition);
-                        _hookState = State.Fired;
+                        HookState = State.Fired;
                         break;
                     }
                 case State.Connected:
                     {
-                        _hookState = State.Pulling;
+                        HookState = State.Pulling;
                         break;
                     }
                 case State.Pulling:
                     {
-                        _hookPosition = _handlePosition;
-                        _hookState = State.Idle;
+                        HookState = State.Idle;
                         break;
                     }
             }
@@ -162,20 +181,20 @@ namespace Wizards
         public void CheckCollision(PhysicalSprite sprite)
         {
             //only check collisions if fired
-            if (_hookState != State.Connected)
+            if (_hookState != State.Fired)
             {
                 return;
             }
 
                 if ( sprite.SpriteLifeState == PhysicalSprite.LifeState.Living
-                    && _hookPosition.Y > sprite.Top 
+                    && _hookPosition.Y >= sprite.Top 
                     && _hookPosition.Y <= sprite.Bottom 
-                    && _hookPosition.X > sprite.LeftSide 
-                    && _hookPosition.X > sprite.RightSide
+                    && _hookPosition.X <= sprite.RightSide 
+                    && _hookPosition.X >= sprite.LeftSide
                     ) 
                 {
                     _hookedSprite = sprite;
-                    _hookState = State.Connected;
+                    HookState = State.Connected;
                 }
         }
 
