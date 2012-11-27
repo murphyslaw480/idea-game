@@ -48,7 +48,7 @@ namespace Wizards
         //store eaten sprites to spit back out when exploding
         private List<PhysicalSprite> consumedSprites = new List<PhysicalSprite>();
         //time between spitting back out successive sprites
-        private const float spitTime = 0.3f;
+        private const float spitTime = 1.3f;
         private const float spitTimeVariance = 0.1f;
         private float tillNextSpit;
         private PhysicalSprite spriteToSpit;
@@ -57,8 +57,9 @@ namespace Wizards
         {
             get 
             {
-                return spriteToSpit;
+                PhysicalSprite p = spriteToSpit;
                 spriteToSpit = null;
+                return p;
             }
         }
 
@@ -103,7 +104,7 @@ namespace Wizards
             {
                 state = State.Exploding;
                 tillNextSpit = spitTime;
-                gravity = new Gravity(SourcePosition, -gravity.Magnitude * 2.0f);
+                gravity = new Gravity(SourcePosition, -gravity.Magnitude);
             }
 
             if (state == State.Exploding)
@@ -112,10 +113,11 @@ namespace Wizards
                 if (tillNextSpit <= 0 && consumedSprites.Count > 0)
                 {
                     spriteToSpit = consumedSprites[0];
-                    spriteToSpit.SpriteLifeState = PhysicalSprite.LifeState.Living;
+                    spriteToSpit.SpriteLifeState = PhysicalSprite.LifeState.Projectile;
+                    spriteToSpit.Reset();
                     consumedSprites.Remove(spriteToSpit);
                     Vector2 spitDirection = new Vector2((float)rand.NextDouble(), (float)rand.NextDouble());
-                    spriteToSpit.applyForce(spitDirection * gravity.Magnitude);
+                    spriteToSpit.Velocity = spitDirection * (float)(0.5 + rand.NextDouble()) * 100000;
                     tillNextSpit = spitTime + spitTimeVariance * (1 - 2 * (float)rand.NextDouble());
                 }
             }

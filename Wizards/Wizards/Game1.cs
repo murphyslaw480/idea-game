@@ -105,7 +105,7 @@ namespace Wizards
 
             // TODO: Add your update logic here
             mMouseIconSprite.Update();
-            player.Update(gameTime, graphics, mMouseIconSprite.Position, blackHole.Gravity);
+            player.Update(gameTime, graphics, blackHole.Gravity, mMouseIconSprite.Position);
             MouseState ms = Mouse.GetState();
             UpdateFire(ms, gameTime);
             SpawnGoblin(gameTime);
@@ -124,7 +124,7 @@ namespace Wizards
                 if (g.SpriteLifeState == PhysicalSprite.LifeState.Destroyed)
                     goblins.Remove(g);
                 else
-                    g.Update(gameTime, this.graphics, player.Position, blackHole.Gravity);
+                    g.Update(gameTime, this.graphics, blackHole.Gravity, player.Position);
             }
 
             PhysicalSprite ps;
@@ -134,7 +134,9 @@ namespace Wizards
                 if (outOfBounds(ps))
                     spitSprites.Remove(ps);
                 else
-                    ps.Update(gameTime, this.graphics, player.Position, blackHole.Gravity);
+                {
+                    ps.Update(gameTime, this.graphics, blackHole.Gravity);
+                }
             }
 
             removeLostBalls();

@@ -19,6 +19,12 @@ namespace Wizards
         private const float TOTAL_TIME_TO_DESTROY_SPRITE = 0.5f;
         //change in position per second (px/s)
         private Vector2 _velocity = Vector2.Zero;
+        public Vector2 Velocity 
+        {
+            get { return _velocity; }
+            set { _velocity = value; }
+        }
+
         //change in velocity (px / s^2)
         private Vector2 _acceleration = Vector2.Zero;
         //Mass affects how an object responds to forces (a = F/m)
@@ -27,6 +33,8 @@ namespace Wizards
         private readonly float naturalDeceleration;
         //magnitude of _velocity cannot exceed maxSpeed
         private readonly float maxSpeed;
+        //max speed of a sprite after it is spit out of a black hole
+        private const float maxSpriteProjectileSpeed = 10.0f;
         //for being eaten by black hole:
         protected readonly float originalScale;
         private float timeUntilDestroyed = TOTAL_TIME_TO_DESTROY_SPRITE;
@@ -35,7 +43,8 @@ namespace Wizards
         {
             Living,
             BeingEatenByBlackHole,
-            Destroyed
+            Destroyed,
+            Projectile
         };
         public LifeState SpriteLifeState;
 
@@ -101,7 +110,7 @@ namespace Wizards
                 case (LifeState.Living):
                     {
                         _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
-                        controlVelocity();
+                        controlVelocity(maxSpeed);
                         //apply velocity to Sprite Update method - which will also check screen bounds
                         base.Update(theGameTime, _velocity, new Vector2(1, 1), theGraphics);
                         _acceleration = Vector2.Zero;
@@ -121,20 +130,37 @@ namespace Wizards
                         }
                         break;
                     }
+                case (LifeState.Projectile):
+                    {
+                        _velocity += _acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+                        controlVelocity(maxSpriteProjectileSpeed);
+                        Position += _velocity;
+                        _acceleration = Vector2.Zero;
+                        angle += 0.1f * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+                        break;
+                    }
 
             }
         }
 
-        public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 theFocusPoint)
+        public void Reset()
         {
-            lookAtThis(theFocusPoint);
+            _velocity = Vector2.Zero;
+            _acceleration = Vector2.Zero;
+            shade.A = 255;
+            Scale = originalScale;
+        }
+
+        public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Gravity theGravity)
+        {
+            applyGravity(theGravity, theGameTime);
             Update(theGameTime, theGraphics);
         }
 
-        public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 theFocusPoint, Gravity theGravity)
+        public virtual void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Gravity theGravity, Vector2 theFocusPoint )
         {
-            Update(theGameTime, theGraphics, theFocusPoint);
-            applyGravity(theGravity, theGameTime);
+            lookAtThis(theFocusPoint);
+            Update(theGameTime, theGraphics, theGravity);
         }
 
         private void applyGravity(Gravity gravity, GameTime theGameTime)
@@ -149,7 +175,7 @@ namespace Wizards
         /// apply natural deceleration to gradually reduce the object's velocity 
         /// and limit velocity from exceeding maxSpeed
         /// </summary>
-        private void controlVelocity()
+        private void controlVelocity(float maximumSpeed)
         {
             float speed = _velocity.Length();
             if ((int)speed > 0 && !((int)_acceleration.Length() > 0))
@@ -160,8 +186,8 @@ namespace Wizards
                 _velocity -= deceleration;
             }
             //scale down velocity if travelling over maxSpeed
-            if (speed > maxSpeed)
-                _velocity = _velocity * maxSpeed / speed;
+            if (speed > maximumSpeed)
+                _velocity = _velocity * maximumSpeed / speed;
         }
 
         /// <summary>

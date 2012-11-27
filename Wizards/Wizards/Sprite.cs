@@ -102,6 +102,7 @@ namespace Wizards
             this.angle = angle;
         }
 
+
         // TODO: New Enemy Update
         /*public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection, Vector2 playerPos)
         {

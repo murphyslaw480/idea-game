@@ -50,7 +50,7 @@ namespace Wizards
                                                                  new Vector2(0, THRUSTER_PARTICLE_DECELERATION));
         }
 
-        public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Vector2 theFocusPoint)
+        public override void Update(GameTime theGameTime, GraphicsDeviceManager graphics, Gravity theGravity, Vector2 theFocusPoint)
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
             UpdateMovement(aCurrentKeyboardState);
@@ -58,7 +58,7 @@ namespace Wizards
             //TODO: Add a PositionVector property to sprite class
             //Reposition Downward Thruster to MidBottom of rect
             mDownwardThrusterEffect.Update(theGameTime, Center);
-            base.Update(theGameTime, graphics, theFocusPoint);
+            base.Update(theGameTime, graphics, theGravity, theFocusPoint);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)

@@ -20,10 +20,10 @@ namespace Wizards
             MovementForce = theMovementForce;
         } 
 
-        public override void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Vector2 playerPosition, Gravity theGravity)
+        public override void Update(GameTime theGameTime, GraphicsDeviceManager theGraphics, Gravity theGravity, Vector2 playerPosition)
         {
             applyForce(MovementForce * directionTo(playerPosition));
-            base.Update(theGameTime, theGraphics, playerPosition, theGravity);
+            base.Update(theGameTime, theGraphics, theGravity, playerPosition);
         }
 
         private Vector2 directionTo(Vector2 targetPosition)
